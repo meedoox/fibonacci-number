@@ -6,9 +6,10 @@ import { FibonacciInput, fibonacciSchema } from '../schemas/fibonacci'
 
 type Props = {
   onSubmit: (n: number) => void
+  onValidationError: (error: string) => void
 }
 
-const FibonacciForm: React.FC<Props> = ({ onSubmit }) => {
+const FibonacciForm: React.FC<Props> = ({ onSubmit, onValidationError }) => {
   const {
     register,
     handleSubmit,
@@ -17,18 +18,25 @@ const FibonacciForm: React.FC<Props> = ({ onSubmit }) => {
     resolver: zodResolver(fibonacciSchema),
   })
 
-  const submitHandler = (data: FibonacciInput) => {
+  const handlerOnValid = (data: FibonacciInput) => {
     onSubmit(data.n)
   }
 
+  const handlerOnInvalid = () => {
+    if (errors.n) {
+      onValidationError(errors.n.message || 'Invalid input');
+    }
+  }
+
+  const submitValidation = handleSubmit(handlerOnValid, handlerOnInvalid)
+
   return (
-    <form onSubmit={handleSubmit(submitHandler)}>
+    <form onSubmit={submitValidation}>
       <div>
-        <label htmlFor="n">Insert value n:</label>
+        <label htmlFor="n">Insert value n: </label>
         <input id="n" {...register('n')} />
-        {errors.n && <p style={{ color: 'red' }}>{errors.n.message}</p>}
       </div>
-      <button type="submit">Get the Fibonacci number</button>
+      <button type="submit" style={{marginTop: '10px'}}>Get the Fibonacci number</button>
     </form>
   )
 }

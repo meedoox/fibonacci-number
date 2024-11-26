@@ -20,23 +20,25 @@ function App() {
       setResult(fibNumber)
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error)
-      } else {
-        setError(
-          'There was an unknown error during the calculation. Please try again later'
-        )
+        setError(err.response?.data?.error || 'There was an unknown error during the calculation. Please try again later')
       }
     } finally {
       setLoading(false)
     }
   }
 
+  const handleValidationError = (validationError: string) => {
+    setError(validationError)
+    setResult(null)
+  }
+
   return (
     <>
       <h1>Fibonacci Calculator</h1>
-      <FibonacciForm onSubmit={handleFormSubmit} />
+      <FibonacciForm onSubmit={handleFormSubmit} onValidationError={handleValidationError}/>
       {loading && <p>Loading...</p>}
       <ResultDisplay result={result} error={error} />
+      {!result && !error && !loading && <p>Please enter a number to calculate the Fibonacci sequence.</p>}
     </>
   )
 }

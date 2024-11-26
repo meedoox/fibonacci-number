@@ -1,0 +1,19 @@
+{
+  "formatOnSave": true,
+  "trailingComma": "es5",
+  "arrowParens": "always",
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "semi": false,
+  "importOrder": [
+    "^next/(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^@/(.*)$",
+    "^@assets/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "pluginSearchDirs": false
+}
